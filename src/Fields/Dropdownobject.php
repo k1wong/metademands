@@ -436,6 +436,13 @@ class Dropdownobject extends CommonDBTM
                     'toupdate' => $toupdate,
                     'readonly' => $data['readonly'] ?? false,
                 ];
+
+                if (Session::getCurrentInterface() != 'central') {
+                    $opt['toadd'][Session::getLoginUserID()] = [
+                        'id' => Session::getLoginUserID(),
+                        'text' => getUserName(Session::getLoginUserID()),
+                    ];
+                }
                 if ($data['is_mandatory'] == 1) {
                     $opt['specific_tags'] = ['required' => ($data['is_mandatory'] == 1 ? "required" : "")];
                 }
@@ -464,6 +471,7 @@ class Dropdownobject extends CommonDBTM
                         }
                     }
                 }
+//                \Toolbox::logInfo($opt);
                 echo User::dropdown($opt);
                 if ($opt['readonly']) {
                     echo Html::hidden($opt['name'], ['value' => $opt['value']]);
