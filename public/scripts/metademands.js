@@ -173,7 +173,7 @@ function plugin_metademands_wizard_validateForm(metademandparams)
             && fieldname != '_uploader_content[]'
             && fieldtype != 'file'
             && fieldtype != 'informations'
-            //                                    && fieldtype != 'hidden'
+            && fieldtype != 'hidden' //for input hidden for dropdown_multiple
             && fieldmandatory == true) {
             var res = $('[name=\"' + fieldname + '\"]').closest('[bloc-id]').css('display');
 
@@ -405,11 +405,13 @@ function plugin_metademands_wizard_validateForm(metademandparams)
                 && fieldmandatory == true
                 && visible != 'none') {
                 // add an 'invalid' class to the field:
+
                 var fieldname = z[i].name;
+
                 var res = $('[name=\"' + fieldname + '\"]').closest('[bloc-id]').css('display');
                 if (res != 'none') {
-                    $('[name=\"' + fieldname + '\"]').addClass('invalid');
-                    $('[name=\"' + fieldname + '\"]').attr('required', 'required');
+                    $('[name*=\"' + fieldname + '\"]').addClass('invalid');
+                    $('[name*=\"' + fieldname + '\"]').attr('required', 'required');
 //                                 $('[for=\"' + fieldname + '\"]').css('color', 'red');
 
                     var newfieldname = fieldname.match(/\[(.*?)\]/);
@@ -418,8 +420,8 @@ function plugin_metademands_wizard_validateForm(metademandparams)
                     }
                     ko++;
                 } else {
-                    $('[name=\"' + fieldname + '\"]').removeClass('invalid');
-                    $('[name=\"' + fieldname + '\"]').removeAttr('required');
+                    $('[name*=\"' + fieldname + '\"]').removeClass('invalid');
+                    $('[name*=\"' + fieldname + '\"]').removeAttr('required');
 //                                 $('[for=\"' + fieldname + '\"]').css('color', 'unset');
                 }
             } else if (isnumber == 'isnumber'

@@ -236,15 +236,18 @@ class Dropdownmultiple extends CommonDBTM
                 }
 
                 if ($item->maybeTemplate()) {
-                    $criteria['WHERE'][getTableForItemType($data['item']) . '.is_template'] = 0;
+                    $crit[getTableForItemType($data['item']) . '.is_template'] = 0;
+                    $criteria['WHERE'] = $criteria['WHERE'] + $crit;
                 }
 
-                $criteria['WHERE'] = getEntitiesRestrictCriteria(
+                $crit = getEntitiesRestrictCriteria(
                     getTableForItemType($data['item']),
                     '',
                     '',
                     $item->maybeRecursive()
                 );
+
+                $criteria['WHERE'] = $criteria['WHERE'] + $crit;
 
                 if ($data['item'] == Location::getType() || $data['item'] == Group::getType()) {
                     $criteria['ORDER'] = ['completename ASC'];
